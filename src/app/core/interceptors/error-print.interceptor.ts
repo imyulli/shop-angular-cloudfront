@@ -22,13 +22,13 @@ export class ErrorPrintInterceptor implements HttpInterceptor {
       tap({
         error: (e: unknown) => {
           const url = new URL(request.url);
-          const err = e as HttpErrorResponse;
+          const responseError = e as HttpErrorResponse;
           let message = `Request to "${url.pathname}" failed. Check the console for the details`;
 
-          if (err.status === 401) {
+          if (responseError.status === 401) {
             message = 'You are not authorized. Please login';
           }
-          if (err.status === 403) {
+          if (responseError.status === 403) {
             message = 'The access is denied';
           }
 
