@@ -32,7 +32,11 @@
             "style": "camelCase"
           }
         ],
-        "rxjs/no-subject-value": [0]
+        "rxjs/no-subject-value": [0],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          { "selector": "property", "format": null }
+        ]
       }
     },
     {
