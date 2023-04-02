@@ -21,7 +21,6 @@ export class ManageProductsService extends ApiService {
       switchMap((url) =>
         this.http.put(url, file, {
           headers: {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             'Content-Type': 'text/csv',
           },
         })
@@ -31,11 +30,21 @@ export class ManageProductsService extends ApiService {
 
   private getPreSignedUrl(fileName: string): Observable<string> {
     const url = this.getUrl('import', 'import');
+    const token = localStorage.getItem('authorization_token');
 
-    return this.http.get<string>(url, {
+    const requestParams = {
       params: {
         name: fileName,
       },
-    });
+      headers: {},
+    };
+
+    if (token) {
+      requestParams.headers = {
+        Authorization: `Basic ${token}`,
+      };
+    }
+
+    return this.http.get<string>(url, requestParams);
   }
 }

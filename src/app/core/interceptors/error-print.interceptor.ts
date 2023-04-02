@@ -19,13 +19,17 @@ export class ErrorPrintInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       tap({
-        error: () => {
+        error: (e: unknown) => {
           const url = new URL(request.url);
+          let message = `Request to "${url.pathname}" failed. Check the console for the details`;
+          if (e.status === 401) {
+            message = 'You are not authorized. Please login';
+          }
+          if (e.status === 403) {
+            message = 'The access is denied';
+          }
 
-          this.notificationService.showError(
-            `Request to "${url.pathname}" failed. Check the console for the details`,
-            0
-          );
+          this.notificationService.showError(message, 0);
         },
       })
     );
